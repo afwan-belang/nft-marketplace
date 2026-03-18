@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  /* Konfigurasi Warna Kustom */
+  --color-dark-bg: #070515;
+  --color-primary: #8A2BE2;
+  --color-secondary: #4169E1;
+  --color-glass: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Konfigurasi Font Kustom */
+  --font-sans: 'Space Grotesk', sans-serif;
+  --font-display: 'Orbitron', sans-serif;
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    @apply bg-dark-bg text-white font-sans antialiased selection:bg-primary selection:text-white;
+    /* Mencegah horizontal scroll pada tampilan mobile */
+    overflow-x: hidden; 
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-wide;
+  }
+}
+
+/* Utilities untuk Glassmorphism & Detail Kecil */
+@layer utilities {
+  .glass-panel {
+    @apply bg-glass backdrop-blur-xl border border-glass-border shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  }
+}
+
+/* Sembunyikan scrollbar untuk Chrome, Safari dan Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Sembunyikan scrollbar untuk IE, Edge dan Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Custom Main Scrollbar untuk Desktop */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid var(--color-dark-bg); /* Memberikan jarak pinggir */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 43, 226, 0.5); /* Warna primary saat di-hover */
+}
