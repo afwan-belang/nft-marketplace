@@ -65,3 +65,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(138, 43, 226, 0.5); /* Warna primary saat di-hover */
 }
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-glass backdrop-blur-xl border border-glass-border shadow-[0_4px_30px_rgba(0,0,0,0.2)];
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+  }
+}
