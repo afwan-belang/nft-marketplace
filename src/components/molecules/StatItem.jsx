@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react'; // Import memo
 
 const StatItem = ({ value, label }) => {
   return (
@@ -13,4 +13,4 @@ const StatItem = ({ value, label }) => {
   );
 };
 
-export default StatItem;
+export default memo(StatItem); // Bungkus saat export
