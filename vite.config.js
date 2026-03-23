@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import webfontDownload from 'vite-plugin-webfont-dl'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), webfontDownload()],
   build: {
     // Membuang console.log dan debugger otomatis saat build production
     esbuild: {
