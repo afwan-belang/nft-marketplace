@@ -1,8 +1,8 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import ExploreCard from '../molecules/ExploreCard';
 
 const ExploreArtworks = () => {
-  // Data dummy kategori artwork
   const categories = [
     { id: 1, title: "Abstract", items: "12 Items", image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop" },
     { id: 2, title: "3D Art", items: "8 Items", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" },
@@ -11,6 +11,17 @@ const ExploreArtworks = () => {
     { id: 5, title: "Sci-Fi", items: "9 Items", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop" },
     { id: 6, title: "Watercolor", items: "31 Items", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop" },
   ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
+
+  // Efek muncul membesar dari skala 0.8
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    show: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
+  };
 
   return (
     <section className="py-16 relative z-10" id="explore">
@@ -22,17 +33,23 @@ const ExploreArtworks = () => {
           </h2>
         </div>
 
-        {/* Grid Layout untuk Artworks */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {categories.map((cat) => (
-            <ExploreCard 
-              key={cat.id}
-              title={cat.title}
-              itemsCount={cat.items}
-              image={cat.image}
-            />
+            <motion.div key={cat.id} variants={itemVariants}>
+              <ExploreCard 
+                title={cat.title}
+                itemsCount={cat.items}
+                image={cat.image}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>
