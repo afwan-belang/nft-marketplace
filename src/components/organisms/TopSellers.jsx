@@ -20,8 +20,12 @@ const TopSellers = () => {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    show: { opacity: 1, x: 0, transition: { type: "tween", duration: 0.3, ease: "easeOut" } }
+    hidden: { opacity: 0, x: -30 }, // Jarak digeser sedikit lebih jauh
+    show: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    }
   };
 
   return (
@@ -31,16 +35,16 @@ const TopSellers = () => {
           <h2 className="text-3xl md:text-4xl font-bold font-display text-white">Top Sellers</h2>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 transform-gpu"
         >
           {sellers.map((seller, index) => (
-            <motion.div 
-              key={seller.id} 
+            <motion.div
+              key={seller.id}
               variants={itemVariants}
               style={{ willChange: "transform, opacity" }}
             >

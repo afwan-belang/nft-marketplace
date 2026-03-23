@@ -18,8 +18,12 @@ const ExploreArtworks = () => {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: "tween", duration: 0.4, ease: "easeOut" } }
+    hidden: { opacity: 0, scale: 0.85 }, // Jangan terlalu kecil, 0.85 cukup
+    show: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+    }
   };
 
   return (
@@ -29,17 +33,17 @@ const ExploreArtworks = () => {
           <h2 className="text-3xl md:text-4xl font-bold font-display text-white">Explore Artworks</h2>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch transform-gpu"
         >
           {categories.map((cat) => (
-            <motion.div 
-              key={cat.id} 
-              variants={itemVariants} 
+            <motion.div
+              key={cat.id}
+              variants={itemVariants}
               className="h-full"
               style={{ willChange: "transform, opacity" }}
             >

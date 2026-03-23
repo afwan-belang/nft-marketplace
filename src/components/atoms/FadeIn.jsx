@@ -1,6 +1,5 @@
 import React from 'react';
-import { m, LazyMotion, domAnimation } from 'framer-motion'; 
-// Perhatikan: kita import 'm' bukan 'motion', dan import LazyMotion & domAnimation
+import { motion } from 'framer-motion';
 
 const FadeIn = ({ children, delay = 0, direction = 'up', className = '', id }) => {
   const directions = {
@@ -12,20 +11,20 @@ const FadeIn = ({ children, delay = 0, direction = 'up', className = '', id }) =
   };
 
   return (
-    // Bungkus dengan LazyMotion
-    <LazyMotion features={domAnimation} strict>
-      {/* Gunakan m.div, bukan motion.div */}
-      <m.div
-        id={id}
-        initial={{ opacity: 0, ...directions[direction] }}
-        whileInView={{ opacity: 1, x: 0, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1], delay: delay }}
-        className={className}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <motion.div
+      id={id}
+      initial={{ opacity: 0, ...directions[direction] }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      // Perbaikan 1: Gunakan amount 0.1 agar lebih akurat di HP
+      viewport={{ once: true, amount: 0.1 }}
+      // Perbaikan 2: Durasi sedikit dipanjangkan (0.8) dengan kurva Apple-like
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: delay }}
+      // Perbaikan 3: transform-gpu memastikan layer dikomposisi oleh GPU
+      className={`${className} transform-gpu`}
+      style={{ willChange: "transform, opacity" }}
+    >
+      {children}
+    </motion.div>
   );
 };
 

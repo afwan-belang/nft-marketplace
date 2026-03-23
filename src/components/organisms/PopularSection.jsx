@@ -18,7 +18,11 @@ const PopularSection = () => {
   // Hapus spring, ganti tween yang super ringan
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: "tween", duration: 0.4, ease: "easeOut" } }
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } // Lebih smooth
+    }
   };
 
   return (
@@ -34,8 +38,8 @@ const PopularSection = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          className="flex overflow-x-auto no-scrollbar gap-6 snap-x pb-8 pt-4 items-stretch md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6"
+          viewport={{ once: true, amount: 0.1 }} // Gunakan amount
+          className="flex overflow-x-auto no-scrollbar gap-6 snap-x pb-8 pt-4 items-stretch md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 transform-gpu" // Tambahkan transform-gpu
         >
           {popularNFTs.map((nft) => (
             <motion.div 

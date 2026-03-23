@@ -20,11 +20,11 @@ const SectionFallback = () => (
 
 function App() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-dark-bg selection:bg-primary selection:text-white pb-24 lg:pb-0">
+    <div className="min-h-screen relative overflow-hidden bg-dark-bg selection:bg-primary selection:text-white pb-24 lg:pb-0 ">
       
       {/* Ambient Lights Global */}
-      <div className="fixed top-1/4 -left-64 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
-      <div className="fixed bottom-1/4 -right-64 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
+      <div className="fixed top-1/4 -left-64 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none z-0 transform-gpu"></div>
+      <div className="fixed bottom-1/4 -right-64 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px] pointer-events-none z-0 transform-gpu"></div>
 
       <Navbar />
       
