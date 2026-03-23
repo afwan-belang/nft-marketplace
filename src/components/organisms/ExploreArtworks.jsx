@@ -14,23 +14,19 @@ const ExploreArtworks = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-  // Efek muncul membesar dari skala 0.8
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    show: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: "tween", duration: 0.4, ease: "easeOut" } }
   };
 
   return (
     <section className="py-16 relative z-10" id="explore">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold font-display text-white">
-            Explore Artworks
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold font-display text-white">Explore Artworks</h2>
         </div>
 
         <motion.div 
@@ -38,19 +34,19 @@ const ExploreArtworks = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
         >
           {categories.map((cat) => (
-            <motion.div key={cat.id} variants={itemVariants}>
-              <ExploreCard 
-                title={cat.title}
-                itemsCount={cat.items}
-                image={cat.image}
-              />
+            <motion.div 
+              key={cat.id} 
+              variants={itemVariants} 
+              className="h-full"
+              style={{ willChange: "transform, opacity" }}
+            >
+              <ExploreCard title={cat.title} itemsCount={cat.items} image={cat.image} />
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   );

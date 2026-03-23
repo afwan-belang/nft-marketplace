@@ -16,26 +16,19 @@ const TopSellers = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 } // Jeda lebih cepat karena itemnya kecil-kecil
-    }
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
 
-  // Efek dari samping (x: -20)
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.4 } }
+    show: { opacity: 1, x: 0, transition: { type: "tween", duration: 0.3, ease: "easeOut" } }
   };
 
   return (
     <section className="py-16 relative z-10">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold font-display text-white">
-            Top Sellers
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold font-display text-white">Top Sellers</h2>
         </div>
 
         <motion.div 
@@ -46,17 +39,15 @@ const TopSellers = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
         >
           {sellers.map((seller, index) => (
-            <motion.div key={seller.id} variants={itemVariants}>
-              <SellerItem 
-                rank={index + 1}
-                name={seller.name}
-                amount={seller.amount}
-                avatar={seller.avatar}
-              />
+            <motion.div 
+              key={seller.id} 
+              variants={itemVariants}
+              style={{ willChange: "transform, opacity" }}
+            >
+              <SellerItem rank={index + 1} name={seller.name} amount={seller.amount} avatar={seller.avatar} />
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   );
