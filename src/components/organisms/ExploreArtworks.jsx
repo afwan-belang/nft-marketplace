@@ -1,56 +1,119 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import ExploreCard from '../molecules/ExploreCard';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import { Filter } from 'lucide-react';
+import NFTCard from '../molecules/NFTCard';
+
+// 1. Simulasi API Call (Arsitektur level Enterprise)
+// Di dunia nyata, Anda tinggal mengganti fungsi ini dengan: axios.get('https://api.opensea.io/api/v1/assets')
+const fetchExploreNFTs = async () => {
+  // Mensimulasikan jeda jaringan (loading) selama 0.8 detik agar terasa nyata
+  await new Promise(resolve => setTimeout(resolve, 800)); 
+  
+  return [
+    { id: 101, title: "Neon Deity", author: "alexand", initialPrice: 2.45, likes: "12k", image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=600&auto=format&fit=crop", category: "art", accentColor: "#a855f7" },
+    
+    // LINK DIPERBARUI: Visual Cyberpunk / Neon 3D yang valid
+    { id: 102, title: "Pepe Cyberpunk", author: "meme_lord", initialPrice: 0.85, likes: "45k", image: "https://images.unsplash.com/photo-1633436375308-a5113c19b62a?q=80&w=600&auto=format&fit=crop", category: "meme", accentColor: "#10b981" },
+    
+    { id: 103, title: "Excalibur X", author: "gamer_x", initialPrice: 1.20, likes: "8.1k", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop", category: "gaming", accentColor: "#ef4444" },
+    { id: 104, title: "Astro Ape", author: "moon_walker", initialPrice: 3.50, likes: "22k", image: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=600&auto=format&fit=crop", category: "art", accentColor: "#ec4899" },
+    
+    // LINK DIPERBARUI: Visual Koin Doge (Doge Father) yang valid
+    { id: 105, title: "Doge Father", author: "crypto_king", initialPrice: 4.20, likes: "99k", image: "https://images.unsplash.com/photo-1622630998477-20b41cd0e15f?q=80&w=600&auto=format&fit=crop", category: "meme", accentColor: "#f59e0b" },
+    
+    { id: 106, title: "Pixel Racer", author: "retro_dev", initialPrice: 0.45, likes: "2.3k", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop", category: "gaming", accentColor: "#3b82f6" },
+    { id: 107, title: "Void Walker", author: "zenith", initialPrice: 1.80, likes: "14k", image: "https://images.unsplash.com/photo-1618172193622-ae2d025f4032?q=80&w=600&auto=format&fit=crop", category: "art", accentColor: "#8b5cf6" },
+    { id: 108, title: "ETH to Moon", author: "vitalik_fan", initialPrice: 0.10, likes: "5k", image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&auto=format&fit=crop", category: "meme", accentColor: "#6366f1" },
+  ];
+};
 
 const ExploreArtworks = () => {
-  const categories = [
-    { id: 1, title: "Abstract", items: "12 Items", image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop" },
-    { id: 2, title: "3D Art", items: "8 Items", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" },
-    { id: 3, title: "Modern Art", items: "24 Items", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" },
-    { id: 4, title: "Game", items: "15 Items", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" },
-    { id: 5, title: "Sci-Fi", items: "9 Items", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop" },
-    { id: 6, title: "Watercolor", items: "31 Items", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop" },
-  ];
+  // 2. State untuk Filter Interaktif
+  const [activeFilter, setActiveFilter] = useState('all');
+  const filters = ['all', 'art', 'gaming', 'meme'];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-  };
+  // 3. React Query untuk Data Fetching & Caching Otomatis
+  const { data: nfts, isLoading } = useQuery({
+    queryKey: ['exploreNFTs'],
+    queryFn: fetchExploreNFTs
+  });
 
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.85 }, // Jangan terlalu kecil, 0.85 cukup
-    show: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
+  // 4. Logika Filter (Hanya menampilkan NFT yang sesuai kategori)
+  const filteredNFTs = nfts?.filter(nft => 
+    activeFilter === 'all' ? true : nft.category === activeFilter
+  ) || [];
 
   return (
     <section className="py-16 relative z-10" id="explore">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold font-display text-white">Explore Artworks</h2>
+        
+        {/* Header & Filter Bar (OpenSea Style) */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold font-display text-white mb-2">
+              Explore Collections
+            </h2>
+            <p className="text-gray-400 text-sm">Discover top trending NFTs in various categories.</p>
+          </div>
+
+          {/* Deretan Tombol Filter Kategori */}
+          <div className="flex items-center overflow-x-auto no-scrollbar gap-3 pb-2 md:pb-0">
+            <div className="flex items-center gap-2 mr-2 text-gray-400 shrink-0">
+              <Filter size={18} />
+            </div>
+            {filters.map(filter => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-5 py-2 rounded-full font-medium text-sm transition-all duration-300 capitalize border shrink-0 ${
+                  activeFilter === filter 
+                  ? 'bg-primary text-white border-primary shadow-[0_0_15px_rgba(138,43,226,0.4)]' 
+                  : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch transform-gpu"
-        >
-          {categories.map((cat) => (
-            <motion.div
-              key={cat.id}
-              variants={itemVariants}
-              className="h-full"
-              style={{ willChange: "transform, opacity" }}
-            >
-              <ExploreCard title={cat.title} itemsCount={cat.items} image={cat.image} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Area Konten: Loading Spinner ATAU Grid NFT */}
+        {isLoading ? (
+          <div className="w-full flex justify-center items-center py-20 min-h-[400px]">
+            <div className="w-12 h-12 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <motion.div 
+            // Properti 'layout' pada framer-motion akan otomatis membuat animasi posisi (menyortir) secara sangat mulus!
+            layout 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch"
+          >
+            <AnimatePresence mode='popLayout'>
+              {filteredNFTs.map(nft => (
+                <motion.div
+                  key={nft.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full flex transform-gpu"
+                >
+                  <NFTCard 
+                    title={nft.title}
+                    author={nft.author}
+                    initialPrice={nft.initialPrice}
+                    likes={nft.likes}
+                    image={nft.image}
+                    accentColor={nft.accentColor}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
+
       </div>
     </section>
   );

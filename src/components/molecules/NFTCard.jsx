@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import LiveChart from './LiveChart';
+import { Link } from 'react-router-dom';
 
 const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => {
   const [currentPrice, setCurrentPrice] = useState(initialPrice);
@@ -22,7 +23,11 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
   }, []);
 
   return (
-    <div className="relative group min-w-[260px] md:min-w-[280px] w-full max-w-[300px] snap-center cursor-pointer h-full">
+    // Ganti div ini
+    <Link 
+  to={`/nft/${title.toLowerCase().replace(/\s+/g, '-')}`} // Membuat URL ramah SEO, contoh: /nft/neon-deity
+  className="relative group min-w-[260px] md:min-w-[280px] w-full max-w-[300px] snap-center cursor-pointer h-full block"
+>
       
       {/* PERBAIKAN GLOW EFFECT: 
         - inset-0 (tidak lagi melebar keluar dari card)
@@ -84,7 +89,8 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
           </div>
         </div>
       </div>
-    </div>
+      {/* sama ini */}
+    </Link>
   );
 };
 
