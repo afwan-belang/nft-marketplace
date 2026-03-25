@@ -98,15 +98,12 @@ const ExploreArtworks = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-full flex transform-gpu"
+                  // PERBAIKAN: Tambahkan 'justify-center w-full' di sini
+                  className="h-full flex justify-center w-full transform-gpu"
                 >
                   <NFTCard 
                     title={nft.title}
-                    author={nft.author}
-                    initialPrice={nft.initialPrice}
-                    likes={nft.likes}
-                    image={nft.image}
-                    accentColor={nft.accentColor}
+                    // ... props lainnya
                   />
                 </motion.div>
               ))}

@@ -25,9 +25,10 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
   return (
     // Ganti div ini
     <Link 
-  to={`/nft/${title.toLowerCase().replace(/\s+/g, '-')}`} // Membuat URL ramah SEO, contoh: /nft/neon-deity
-  className="relative group min-w-[260px] md:min-w-[280px] w-full max-w-[300px] snap-center cursor-pointer h-full block"
->
+      to={`/nft/${title?.toLowerCase().replace(/\s+/g, '-') || 'item'}`}
+      // PERBAIKAN: Tambahkan 'mx-auto' di akhir class ini agar card selalu presisi di tengah
+      className="relative group min-w-[260px] md:min-w-[280px] w-full max-w-[300px] snap-center cursor-pointer h-full block mx-auto"
+    >
       
       {/* PERBAIKAN GLOW EFFECT: 
         - inset-0 (tidak lagi melebar keluar dari card)

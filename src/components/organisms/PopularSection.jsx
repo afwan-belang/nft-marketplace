@@ -90,7 +90,7 @@ const PopularSection = () => {
             <motion.div 
               key={nft.id} 
               variants={itemVariants} 
-              className="snap-center h-auto flex" 
+              className="snap-center h-auto flex justify-center w-full md:w-auto" 
               style={{ willChange: "transform, opacity" }}
             >
               <NFTCard 
