@@ -107,7 +107,7 @@ const NFTDetail = () => {
               <span className="text-lg text-gray-500 mb-1">{nftData.usdPrice}</span>
             </div>
 
-            <div className="flex gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <Button variant="primary" className="flex-1 py-4 text-lg">
                 <Tag size={18} className="mr-2 inline" /> Buy Now
               </Button>
