@@ -293,8 +293,8 @@ const NFTDetail = () => {
                   <p className="text-gray-400 text-sm md:text-base mb-8 md:mb-10 max-w-sm mx-auto">
                     Congratulations! The blockchain has confirmed your purchase. You are now the verified owner of <span className="text-white font-bold">{nftData.title}</span>.
                   </p>
-                  <Button variant="glass" className="w-full py-3 md:py-4 text-base" onClick={closeModal}>
-                    Return to Gallery
+                  <Button variant="glass" className="w-full py-3 md:py-4 text-base" onClick={() => navigate('/profile')}>
+                      View in Profile
                   </Button>
                 </div>
               )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom'; 
+import { useNavigate, useLocation } from 'react-router-dom'; 
 import { Search, Home, Compass, ShoppingBag, User, ArrowLeft } from 'lucide-react';
 import Button from '../atoms/Button';
 
@@ -9,29 +9,25 @@ const Navbar = () => {
   
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Logika Cerdas untuk membaca posisi halaman saat ini
+  const isNotHomePage = location.pathname !== '/';
   const isDetailPage = location.pathname.includes('/nft/');
+  const isProfilePage = location.pathname === '/profile';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (e, sectionId) => {
-    e.preventDefault();
-    setActiveTab(sectionId);
-
-    if (isDetailPage) {
-      navigate('/');
-      setTimeout(() => {
-        executeScroll(sectionId);
-      }, 100);
-    } else {
-      executeScroll(sectionId);
+    
+    // Sinkronisasi highlight tab navigasi jika user me-refresh halaman Profile
+    if (location.pathname === '/profile') {
+      setActiveTab('profile');
+    } else if (location.pathname === '/') {
+      if (activeTab === 'profile') setActiveTab('home');
     }
-  };
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname, activeTab]);
 
   const executeScroll = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -40,48 +36,71 @@ const Navbar = () => {
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
-      
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+    }
+  };
+
+  // Fungsi sentral untuk menangani semua klik menu
+  const handleNavigation = (e, link) => {
+    e.preventDefault();
+    setActiveTab(link.id);
+
+    if (link.path === '/profile') {
+      navigate('/profile');
+      window.scrollTo(0, 0); // Pindah ke Profile dan mulai dari posisi atas
+    } else {
+      if (isNotHomePage) {
+        navigate('/'); // Jika sedang di Profile/Detail, pulang dulu ke Home
+        setTimeout(() => executeScroll(link.id), 100); // Lalu scroll
+      } else {
+        executeScroll(link.id); // Jika sudah di Home, langsung scroll
+      }
+    }
+  };
+
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    setActiveTab('home');
+    if (isNotHomePage) {
+      navigate('/');
+      setTimeout(() => executeScroll('home'), 100);
+    } else {
+      executeScroll('home');
     }
   };
 
   const desktopLinks = [
-    { name: 'Home', id: 'home' },
-    { name: 'Explore', id: 'explore' },
-    { name: 'Marketplace', id: 'marketplace' },
-    { name: 'Artists', id: 'artists' },
+    { name: 'Home', id: 'home', path: '/' },
+    { name: 'Explore', id: 'explore', path: '/' },
+    { name: 'Marketplace', id: 'marketplace', path: '/' },
+    { name: 'Profile', id: 'profile', path: '/profile' },
   ];
   
   const mobileLinks = [
-    { name: 'Home', id: 'home', icon: Home },
-    { name: 'Explore', id: 'explore', icon: Compass },
-    { name: 'Market', id: 'marketplace', icon: ShoppingBag },
-    { name: 'Artists', id: 'artists', icon: User },
+    { name: 'Home', id: 'home', icon: Home, path: '/' },
+    { name: 'Explore', id: 'explore', icon: Compass, path: '/' },
+    { name: 'Market', id: 'marketplace', icon: ShoppingBag, path: '/' },
+    { name: 'Profile', id: 'profile', icon: User, path: '/profile' },
   ];
 
   return (
     <>
       <nav 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled || isDetailPage ? 'bg-dark-bg/80 backdrop-blur-lg border-b border-white/5 py-4' : 'bg-transparent py-4 md:py-6'
+          isScrolled || isNotHomePage ? 'bg-dark-bg/80 backdrop-blur-lg border-b border-white/5 py-4' : 'bg-transparent py-4 md:py-6'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
           
           <div className="flex items-center gap-4">
+            {/* Tombol Back HANYA muncul jika berada di halaman Detail NFT */}
             {isDetailPage && (
-              <button onClick={() => navigate('/')} className="lg:hidden text-white bg-white/10 p-2 rounded-full transition-colors hover:bg-white/20">
+              <button onClick={() => navigate(-1)} className="lg:hidden text-white bg-white/10 p-2 rounded-full transition-colors hover:bg-white/20">
                 <ArrowLeft size={20} />
               </button>
             )}
             
-            <div 
-              className="flex items-center gap-2 cursor-pointer z-50"
-              onClick={(e) => scrollToSection(e, 'home')}
-            >
+            <div className="flex items-center gap-2 cursor-pointer z-50" onClick={handleLogoClick}>
               <span className="text-white text-xl md:text-2xl font-bold font-display tracking-wider">
                 PLAY <span className="text-gradient">NFT</span>
               </span>
@@ -89,19 +108,23 @@ const Navbar = () => {
           </div>
 
           <ul className="hidden lg:flex items-center gap-8">
-            {desktopLinks.map((link, index) => (
-              <li key={index}>
-                <a 
-                  href={`#${link.id}`}
-                  onClick={(e) => scrollToSection(e, link.id)}
-                  className={`text-sm font-medium transition-colors hover:text-white ${
-                    activeTab === link.id && !isDetailPage ? 'text-white font-semibold' : 'text-gray-400'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
+            {desktopLinks.map((link, index) => {
+              // Highlight akan aktif jika ID cocok di halaman Home ATAU jika sedang berada di /profile
+              const isActive = (activeTab === link.id && !isNotHomePage) || (link.id === 'profile' && isProfilePage);
+              return (
+                <li key={index}>
+                  <a 
+                    href={link.path === '/profile' ? '/profile' : `/#${link.id}`}
+                    onClick={(e) => handleNavigation(e, link)}
+                    className={`text-sm font-medium transition-colors hover:text-white ${
+                      isActive ? 'text-white font-semibold' : 'text-gray-400'
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="hidden lg:flex items-center gap-6">
@@ -116,7 +139,7 @@ const Navbar = () => {
             <Button variant="primary">Register</Button>
           </div>
 
-          {!isDetailPage && (
+          {!isNotHomePage && (
             <div className="flex lg:hidden items-center gap-4">
               <Search className="text-gray-400 hover:text-white transition-colors" size={20} />
               <Button variant="primary" className="px-4 py-1.5 text-xs">Register</Button>
@@ -131,12 +154,12 @@ const Navbar = () => {
         <ul className="flex justify-between items-center">
           {mobileLinks.map((item, index) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id && !isDetailPage;
+            const isActive = (activeTab === item.id && !isNotHomePage) || (item.id === 'profile' && isProfilePage);
 
             return (
               <li 
                 key={index} 
-                onClick={(e) => scrollToSection(e, item.id)}
+                onClick={(e) => handleNavigation(e, item)}
                 className="flex flex-col items-center gap-1 cursor-pointer group relative w-12"
               >
                 {isActive && (

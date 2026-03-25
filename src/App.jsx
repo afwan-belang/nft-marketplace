@@ -7,6 +7,7 @@ import Footer from './components/organisms/Footer';
 // Lazy load halaman
 const Home = lazy(() => import('./pages/Home'));
 const NFTDetail = lazy(() => import('./pages/NFTDetail'));
+const Profile = lazy(() => import('./pages/Profile'));
 
 const PageFallback = () => (
   <div className="w-full h-screen flex items-center justify-center bg-dark-bg">
@@ -33,6 +34,7 @@ function App() {
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />
               <Route path="/nft/:id" element={<NFTDetail />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </Suspense>
         </AnimatePresence>
