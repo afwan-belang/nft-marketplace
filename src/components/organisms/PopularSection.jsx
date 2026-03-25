@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import NFTCard from '../molecules/NFTCard';
 
 const PopularSection = () => {
-  // Data dummy menggunakan initialPrice (Number) untuk mendukung Live Chart & Bidding
   const popularNFTs = [
     { 
       id: 1, 
@@ -43,7 +42,6 @@ const PopularSection = () => {
     }
   ];
 
-  // Definisi Animasi Container (Induk) - Staggered Effect
   const containerVariants = {
     hidden: { opacity: 0 },
     show: { 
@@ -52,7 +50,6 @@ const PopularSection = () => {
     }
   };
 
-  // Definisi Animasi Item (Anak) - Kurva Smooth Easing
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     show: { 
@@ -66,7 +63,6 @@ const PopularSection = () => {
     <section className="py-20 relative z-10">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
-        {/* Header Section */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold font-display text-white">
             Popular this week
@@ -74,11 +70,6 @@ const PopularSection = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-4 rounded-full"></div>
         </div>
 
-        {/* Container NFT Cards
-          - items-stretch: Memastikan tinggi semua card sejajar
-          - transform-gpu: Memaksa akselerasi hardware
-          - viewport amount 0.1: Animasi jalan saat 10% masuk layar
-        */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -90,13 +81,14 @@ const PopularSection = () => {
             <motion.div 
               key={nft.id} 
               variants={itemVariants} 
+              // PERBAIKAN MOBILE: justify-center w-full md:w-auto agar terpusat
               className="snap-center h-auto flex justify-center w-full md:w-auto" 
               style={{ willChange: "transform, opacity" }}
             >
               <NFTCard 
                 title={nft.title}
                 author={nft.author}
-                initialPrice={nft.initialPrice} // Menggunakan initialPrice yang berupa Number
+                initialPrice={nft.initialPrice}
                 likes={nft.likes}
                 image={nft.image}
                 accentColor={nft.accentColor}

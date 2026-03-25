@@ -6,7 +6,7 @@ import Footer from './components/organisms/Footer';
 
 // Lazy load halaman
 const Home = lazy(() => import('./pages/Home'));
-const NFTDetail = lazy(() => import('./pages/NFTDetail')); // Kita akan buat ini nanti
+const NFTDetail = lazy(() => import('./pages/NFTDetail'));
 
 const PageFallback = () => (
   <div className="w-full h-screen flex items-center justify-center bg-dark-bg">
@@ -18,15 +18,16 @@ function App() {
   const location = useLocation();
 
   return (
+    // PERBAIKAN MOBILE: Tambahan pb-24 lg:pb-0 agar footer tidak tertutup bottom nav
     <div className="min-h-screen relative bg-dark-bg selection:bg-primary selection:text-white flex flex-col pb-24 lg:pb-0">
-      {/* Ambient Lights Global - Tetap dipertahankan agar tema tidak hilang */}
+      
+      {/* Ambient Lights Global dengan transform-gpu */}
       <div className="fixed top-1/4 -left-64 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none z-0 transform-gpu"></div>
       <div className="fixed bottom-1/4 -right-64 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px] pointer-events-none z-0 transform-gpu"></div>
 
       <Navbar />
       
-      <main className="flex-1 w-full">
-        {/* AnimatePresence untuk transisi antar halaman yang smooth */}
+      <main className="flex-1 w-full relative z-10">
         <AnimatePresence mode="wait">
           <Suspense fallback={<PageFallback />}>
             <Routes location={location} key={location.pathname}>

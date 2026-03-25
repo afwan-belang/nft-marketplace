@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import LiveChart from './LiveChart';
-import { Link } from 'react-router-dom';
 
 const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => {
   const [currentPrice, setCurrentPrice] = useState(initialPrice);
@@ -23,18 +23,13 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
   }, []);
 
   return (
-    // Ganti div ini
     <Link 
       to={`/nft/${title?.toLowerCase().replace(/\s+/g, '-') || 'item'}`}
-      // PERBAIKAN: Tambahkan 'mx-auto' di akhir class ini agar card selalu presisi di tengah
+      // PERBAIKAN MOBILE: mx-auto agar card yang ukurannya 300px tidak rata kiri di layar HP yang lebih lebar
       className="relative group min-w-[260px] md:min-w-[280px] w-full max-w-[300px] snap-center cursor-pointer h-full block mx-auto"
     >
       
-      {/* PERBAIKAN GLOW EFFECT: 
-        - inset-0 (tidak lagi melebar keluar dari card)
-        - blur-lg (sebelumnya blur-xl, sekarang pendaran lebih terpusat)
-        - opacity-10 group-hover:opacity-25 (sebelumnya sampai 50, sekarang maksimal 25% agar tidak silau)
-      */}
+      {/* GLOW EFFECT: Lebih subtle dan elegan */}
       <div 
         className="absolute inset-0 rounded-3xl blur-lg opacity-10 group-hover:opacity-25 transition duration-700 z-0"
         style={{ backgroundColor: accentColor }}
@@ -48,7 +43,7 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
             alt={title} 
             loading="lazy" 
             decoding="async" 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" // Efek zoom gambar juga saya kurangi menjadi 105 agar lebih santai
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
 
@@ -90,7 +85,6 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
           </div>
         </div>
       </div>
-      {/* sama ini */}
     </Link>
   );
 };

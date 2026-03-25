@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// 1. Import hooks dari react-router-dom
 import { useNavigate, useLocation, Link } from 'react-router-dom'; 
 import { Search, Home, Compass, ShoppingBag, User, ArrowLeft } from 'lucide-react';
 import Button from '../atoms/Button';
@@ -8,7 +7,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState('home'); 
   
-  // 2. Inisialisasi hooks
   const navigate = useNavigate();
   const location = useLocation();
   const isDetailPage = location.pathname.includes('/nft/');
@@ -21,20 +19,16 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 3. Logika Scroll Cerdas (Mendukung Lintas Halaman)
   const scrollToSection = (e, sectionId) => {
     e.preventDefault();
     setActiveTab(sectionId);
 
-    // Jika user berada di halaman detail NFT, pindahkan dulu ke Home '/'
     if (isDetailPage) {
       navigate('/');
-      // Beri jeda 100ms agar halaman Home selesai di-render sebelum mulai men-scroll
       setTimeout(() => {
         executeScroll(sectionId);
       }, 100);
     } else {
-      // Jika sudah di Home, langsung scroll
       executeScroll(sectionId);
     }
   };
@@ -78,9 +72,8 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
           
           <div className="flex items-center gap-4">
-            {/* Tombol Back muncul khusus di Mobile jika sedang di halaman detail */}
             {isDetailPage && (
-              <button onClick={() => navigate('/')} className="lg:hidden text-white bg-white/10 p-2 rounded-full">
+              <button onClick={() => navigate('/')} className="lg:hidden text-white bg-white/10 p-2 rounded-full transition-colors hover:bg-white/20">
                 <ArrowLeft size={20} />
               </button>
             )}
@@ -123,7 +116,6 @@ const Navbar = () => {
             <Button variant="primary">Register</Button>
           </div>
 
-          {/* Sembunyikan ikon Search & Register di Mobile saat berada di halaman detail agar tidak kepenuhan */}
           {!isDetailPage && (
             <div className="flex lg:hidden items-center gap-4">
               <Search className="text-gray-400 hover:text-white transition-colors" size={20} />
@@ -139,7 +131,6 @@ const Navbar = () => {
         <ul className="flex justify-between items-center">
           {mobileLinks.map((item, index) => {
             const Icon = item.icon;
-            // Aktif jika tab cocok ATAU jika sedang di detail page dan tidak ada tab yang benar-benar aktif
             const isActive = activeTab === item.id && !isDetailPage;
 
             return (

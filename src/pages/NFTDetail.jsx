@@ -6,12 +6,11 @@ import Button from '../components/atoms/Button';
 import LiveChart from '../components/molecules/LiveChart';
 
 const NFTDetail = () => {
-  const { id } = useParams(); // Mengambil ID dari URL
+  const { id } = useParams(); 
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Simulasi data dari API OpenSea berdasarkan ID URL
   const nftData = {
-    title: id.replace(/-/g, ' ').toUpperCase(),
+    title: id ? id.replace(/-/g, ' ').toUpperCase() : 'UNKNOWN NFT',
     author: "mary_jane",
     owner: "cripton_master",
     price: 2.45,
@@ -37,7 +36,7 @@ const NFTDetail = () => {
     >
       <div className="flex flex-col lg:flex-row gap-10">
         
-        {/* BAGIAN KIRI: Gambar NFT (OpenSea Style) */}
+        {/* BAGIAN KIRI */}
         <div className="w-full lg:w-2/5 flex flex-col gap-6">
           <div className="glass-panel rounded-3xl p-2 overflow-hidden border border-white/10 relative group">
             <div className="absolute top-4 right-4 z-10 bg-dark-bg/60 backdrop-blur-md rounded-full px-3 py-1.5 flex items-center gap-2 border border-white/10">
@@ -51,7 +50,6 @@ const NFTDetail = () => {
             />
           </div>
 
-          {/* Properties Panel (Sering ada di OpenSea) */}
           <div className="glass-panel rounded-2xl p-5 border border-white/5">
             <h3 className="text-white font-bold font-display flex items-center gap-2 mb-4">
               <List size={18} className="text-primary" /> Properties
@@ -68,7 +66,7 @@ const NFTDetail = () => {
           </div>
         </div>
 
-        {/* BAGIAN KANAN: Detail & Transaksi */}
+        {/* BAGIAN KANAN */}
         <div className="w-full lg:w-3/5 flex flex-col">
           <div className="flex justify-between items-start mb-4">
             <div className="text-primary font-medium tracking-wide">
@@ -96,7 +94,6 @@ const NFTDetail = () => {
             </div>
           </div>
 
-          {/* Harga & Bidding Box */}
           <div className="glass-panel rounded-3xl p-6 border border-white/10 mb-8 bg-dark-bg/40 relative overflow-hidden">
             <div className="flex items-center gap-2 text-gray-400 mb-2">
               <Clock size={16} /> Sale ends in 12 hours
@@ -107,23 +104,22 @@ const NFTDetail = () => {
               <span className="text-lg text-gray-500 mb-1">{nftData.usdPrice}</span>
             </div>
 
+            {/* PERBAIKAN MOBILE: flex-col sm:flex-row agar tombol responsif */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <Button variant="primary" className="flex-1 py-4 text-lg">
+              <Button variant="primary" className="w-full sm:flex-1 py-4 text-lg">
                 <Tag size={18} className="mr-2 inline" /> Buy Now
               </Button>
-              <Button variant="glass" className="flex-1 py-4 text-lg border-white/20">
+              <Button variant="glass" className="w-full sm:flex-1 py-4 text-lg border-white/20">
                 Make Offer
               </Button>
             </div>
 
-            {/* Inject Grafik Live Price */}
             <div className="mt-4 border-t border-white/10 pt-4">
               <h4 className="text-sm text-gray-400 mb-2">Price History (Live)</h4>
               <LiveChart color="#8A2BE2" />
             </div>
           </div>
 
-          {/* Description */}
           <div className="glass-panel rounded-2xl p-5 border border-white/5">
              <h3 className="text-white font-bold font-display flex items-center gap-2 mb-3">
               <AlignLeft size={18} className="text-primary" /> Description

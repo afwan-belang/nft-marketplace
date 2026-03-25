@@ -4,24 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { Filter } from 'lucide-react';
 import NFTCard from '../molecules/NFTCard';
 
-// 1. Simulasi API Call (Arsitektur level Enterprise)
-// Di dunia nyata, Anda tinggal mengganti fungsi ini dengan: axios.get('https://api.opensea.io/api/v1/assets')
 const fetchExploreNFTs = async () => {
-  // Mensimulasikan jeda jaringan (loading) selama 0.8 detik agar terasa nyata
   await new Promise(resolve => setTimeout(resolve, 800)); 
   
   return [
     { id: 101, title: "Neon Deity", author: "alexand", initialPrice: 2.45, likes: "12k", image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=600&auto=format&fit=crop", category: "art", accentColor: "#a855f7" },
-    
-    // LINK DIPERBARUI: Visual Cyberpunk / Neon 3D yang valid
     { id: 102, title: "Pepe Cyberpunk", author: "meme_lord", initialPrice: 0.85, likes: "45k", image: "https://images.unsplash.com/photo-1633436375308-a5113c19b62a?q=80&w=600&auto=format&fit=crop", category: "meme", accentColor: "#10b981" },
-    
     { id: 103, title: "Excalibur X", author: "gamer_x", initialPrice: 1.20, likes: "8.1k", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop", category: "gaming", accentColor: "#ef4444" },
     { id: 104, title: "Astro Ape", author: "moon_walker", initialPrice: 3.50, likes: "22k", image: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=600&auto=format&fit=crop", category: "art", accentColor: "#ec4899" },
-    
-    // LINK DIPERBARUI: Visual Koin Doge (Doge Father) yang valid
     { id: 105, title: "Doge Father", author: "crypto_king", initialPrice: 4.20, likes: "99k", image: "https://images.unsplash.com/photo-1622630998477-20b41cd0e15f?q=80&w=600&auto=format&fit=crop", category: "meme", accentColor: "#f59e0b" },
-    
     { id: 106, title: "Pixel Racer", author: "retro_dev", initialPrice: 0.45, likes: "2.3k", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop", category: "gaming", accentColor: "#3b82f6" },
     { id: 107, title: "Void Walker", author: "zenith", initialPrice: 1.80, likes: "14k", image: "https://images.unsplash.com/photo-1618172193622-ae2d025f4032?q=80&w=600&auto=format&fit=crop", category: "art", accentColor: "#8b5cf6" },
     { id: 108, title: "ETH to Moon", author: "vitalik_fan", initialPrice: 0.10, likes: "5k", image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&auto=format&fit=crop", category: "meme", accentColor: "#6366f1" },
@@ -29,17 +20,14 @@ const fetchExploreNFTs = async () => {
 };
 
 const ExploreArtworks = () => {
-  // 2. State untuk Filter Interaktif
   const [activeFilter, setActiveFilter] = useState('all');
   const filters = ['all', 'art', 'gaming', 'meme'];
 
-  // 3. React Query untuk Data Fetching & Caching Otomatis
   const { data: nfts, isLoading } = useQuery({
     queryKey: ['exploreNFTs'],
     queryFn: fetchExploreNFTs
   });
 
-  // 4. Logika Filter (Hanya menampilkan NFT yang sesuai kategori)
   const filteredNFTs = nfts?.filter(nft => 
     activeFilter === 'all' ? true : nft.category === activeFilter
   ) || [];
@@ -48,7 +36,6 @@ const ExploreArtworks = () => {
     <section className="py-16 relative z-10" id="explore">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
-        {/* Header & Filter Bar (OpenSea Style) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold font-display text-white mb-2">
@@ -57,7 +44,6 @@ const ExploreArtworks = () => {
             <p className="text-gray-400 text-sm">Discover top trending NFTs in various categories.</p>
           </div>
 
-          {/* Deretan Tombol Filter Kategori */}
           <div className="flex items-center overflow-x-auto no-scrollbar gap-3 pb-2 md:pb-0">
             <div className="flex items-center gap-2 mr-2 text-gray-400 shrink-0">
               <Filter size={18} />
@@ -78,14 +64,12 @@ const ExploreArtworks = () => {
           </div>
         </div>
 
-        {/* Area Konten: Loading Spinner ATAU Grid NFT */}
         {isLoading ? (
           <div className="w-full flex justify-center items-center py-20 min-h-[400px]">
             <div className="w-12 h-12 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
           </div>
         ) : (
           <motion.div 
-            // Properti 'layout' pada framer-motion akan otomatis membuat animasi posisi (menyortir) secara sangat mulus!
             layout 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch"
           >
@@ -98,12 +82,16 @@ const ExploreArtworks = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  // PERBAIKAN: Tambahkan 'justify-center w-full' di sini
+                  // PERBAIKAN MOBILE: justify-center w-full agar grid item terpusat
                   className="h-full flex justify-center w-full transform-gpu"
                 >
                   <NFTCard 
                     title={nft.title}
-                    // ... props lainnya
+                    author={nft.author}
+                    initialPrice={nft.initialPrice}
+                    likes={nft.likes}
+                    image={nft.image}
+                    accentColor={nft.accentColor}
                   />
                 </motion.div>
               ))}
