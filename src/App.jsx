@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/organisms/Navbar';
 import Footer from './components/organisms/Footer';
 import ScrollToTop from './components/atoms/ScrollToTop';
+import InteractiveBackground from './components/atoms/InteractiveBackground';
 
 // Lazy load halaman
 const Home = lazy(() => import('./pages/Home'));
@@ -21,14 +22,12 @@ function App() {
 
   return (
     // PERBAIKAN MOBILE: Tambahan pb-24 lg:pb-0 agar footer tidak tertutup bottom nav
-    <div className="min-h-screen relative bg-dark-bg selection:bg-primary selection:text-white flex flex-col pb-24 lg:pb-0">
+    <div className="min-h-screen relative selection:bg-primary selection:text-white flex flex-col pb-24 lg:pb-0 text-white">
       <ScrollToTop />
       {/* Ambient Lights Global dengan transform-gpu */}
-      <div className="fixed top-1/4 -left-64 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none z-0 transform-gpu"></div>
-      <div className="fixed bottom-1/4 -right-64 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px] pointer-events-none z-0 transform-gpu"></div>
-
+      <InteractiveBackground />
       <Navbar />
-      
+
       <main className="flex-1 w-full relative z-10">
         <AnimatePresence mode="wait">
           <Suspense fallback={<PageFallback />}>
