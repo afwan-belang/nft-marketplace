@@ -25,7 +25,15 @@ const NFTCard = ({ image, title, author, initialPrice, likes, accentColor }) => 
   return (
     <Link 
       to={`/nft/${title?.toLowerCase().replace(/\s+/g, '-') || 'item'}`}
-      // PERBAIKAN MOBILE: mx-auto agar card yang ukurannya 300px tidak rata kiri di layar HP yang lebih lebar
+      // PERBAIKAN: Bawa semua data NFT ini ke halaman berikutnya melalui 'state'
+      state={{ 
+        image, 
+        title, 
+        author, 
+        price: currentPrice, // Bawa harga live terbarunya
+        likes, 
+        accentColor 
+      }}
       className="relative group min-w-[260px] md:min-w-[280px] w-full max-w-[300px] snap-center cursor-pointer h-full block mx-auto"
     >
       
